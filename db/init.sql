@@ -76,6 +76,7 @@ CREATE FUNCTION sp_create_otp(p_user_id INT, p_hash TEXT, p_ttl_minutes INT DEFA
 RETURNS timestamptz LANGUAGE plpgsql AS $$
 DECLARE v_exp timestamptz := now() + make_interval(mins => p_ttl_minutes);
 BEGIN
+
   UPDATE otps SET used = true WHERE user_id = p_user_id AND NOT used;   -- invalidate old codes
   INSERT INTO otps(user_id, code_hash, expires_at) VALUES (p_user_id, p_hash, v_exp);
   RETURN v_exp;
@@ -110,6 +111,7 @@ CREATE FUNCTION sp_import_sales(p_user_id INT, p_file_name TEXT, p_rows jsonb)
 RETURNS jsonb LANGUAGE plpgsql AS $$
 DECLARE v_date DATE; v_upload INT; v_count INT;
 BEGIN
+
   IF p_file_name !~ '^[a-z0-9]+_[0-9]{8}\.txt$' THEN RAISE EXCEPTION 'INVALID_FILE_NAME'; END IF;
   v_date := to_date(substring(p_file_name FROM '_([0-9]{8})\.txt$'), 'YYYYMMDD');
   IF jsonb_typeof(p_rows) <> 'array' OR jsonb_array_length(p_rows) = 0 THEN RAISE EXCEPTION 'EMPTY_FILE'; END IF;
@@ -178,6 +180,20 @@ RETURNS TABLE (id INT, name TEXT, email TEXT, role TEXT, is_verified BOOLEAN, is
 LANGUAGE sql STABLE AS $$
   SELECT u.id, u.name, u.email, u.role, u.is_verified, u.is_active, u.created_at FROM users u ORDER BY u.id;
 $$;
+
+CREATE FUNCTION sp_user_update_info(p_id INT,p_name TEXT, p_email TEXT, p_hash TEXT, p_role TEXT)
+RETURNS jsonb LANGUAGE plpgsql AS $$
+
+BEGIN
+  IF EXISTS (SELECT 1 FROM users WHERE email = lower(p_email)) THEN
+    RAISE EXCEPTION 'EMAIL ALREADY EXISTS';
+  END IF;
+    UPDATE users SET name = coalesce(p_name, name),email = coalesce(p_email, email),
+	password_hash = coalesce(p_hash, password_hash),
+	role = coalesce(p_role, role)
+                    WHERE id = p_id;
+  RETURN jsonb_build_object('id', p_id,'name',p_name, 'email', lower(p_email));
+END $$;
 
 CREATE FUNCTION sp_update_user(p_id INT, p_name TEXT, p_role TEXT, p_active BOOLEAN)
 RETURNS INT LANGUAGE plpgsql AS $$

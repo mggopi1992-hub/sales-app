@@ -34,6 +34,15 @@ router.post('/users', async (req, res) => {
   res.status(201).json(r);
 });
 
+router.put('/users/:id',async(req,res)=>{
+  const {name,email,password,role} = req.body ?? {};
+  //console.log(name,email,password,role)
+  if(!name || !email || !role)
+    return res.status(400).json({error:"Invalid Input"});
+  const u = await one('sp_user_update_info',[Number(req.params.id),name??null,email??null,password??null,role??null]);
+  res.status(201).json(u);
+})
+
 router.put('/users/:id', async (req, res) => {
   const { name, role, is_active } = req.body ?? {};
   const n = await one('sp_update_user', [Number(req.params.id), name ?? null, role ?? null, is_active ?? null]);
