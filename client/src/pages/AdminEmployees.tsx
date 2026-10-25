@@ -185,7 +185,7 @@ export default function AdminEmployees() {
     }
   };
 
-  const update = async (id: number, patch: object) => {
+   /* const update = async (id: number, patch: object) => {
     setError('');
     setSuccess('');
 
@@ -195,13 +195,13 @@ export default function AdminEmployees() {
         body: patch,
       });
 
-      setSuccess('User updated successfully.');
+    //  setSuccess('User updated successfully.');
       await load();
     } catch (e) {
       setError((e as Error).message);
     }
   };
-
+ */
   const remove = async (u: AppUser) => {
     if (!confirm(`Delete ${u.name} and all their sales?`)) return;
 
@@ -331,7 +331,7 @@ export default function AdminEmployees() {
                   'Email',
                   'Role',
                   'Verified',
-                  'Active',
+                /*   'Active', */
                   'Actions',
                 ].map((h) => (
                   <th
@@ -357,25 +357,14 @@ export default function AdminEmployees() {
                   <td className="px-3 py-2">{u.email}</td>
 
                   <td className="px-3 py-2">
-                    <select
-                      className="rounded border px-2 py-1"
-                      value={u.role}
-                      onChange={(e) =>
-                        update(u.id, {
-                          role: e.target.value,
-                        })
-                      }
-                    >
-                      <option value="employee">employee</option>
-                      <option value="admin">admin</option>
-                    </select>
+                    {u.role}
                   </td>
 
-                  <td className="px-3 py-2">
+                   <td className="px-3 py-2">
                     {u.is_verified ? 'Yes' : 'No'}
                   </td>
 
-                  <td className="px-3 py-2">
+                 {/* <td className="px-3 py-2">
                     <input
                       type="checkbox"
                       checked={u.is_active}
@@ -387,7 +376,7 @@ export default function AdminEmployees() {
                       aria-label={`Activate ${u.name}`}
                     />
                   </td>
-
+ */}
                   <td className="whitespace-nowrap px-1 py-2 text-left">
                     <button
                       type="button"

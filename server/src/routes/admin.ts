@@ -43,11 +43,11 @@ router.put('/users/:id',async(req,res)=>{
   res.status(201).json(u);
 })
 
-router.put('/users/:id', async (req, res) => {
+/* router.put('/users/:id', async (req, res) => {
   const { name, role, is_active } = req.body ?? {};
   const n = await one('sp_update_user', [Number(req.params.id), name ?? null, role ?? null, is_active ?? null]);
   res.json({ updated: n });
-});
+}); */
 
 router.delete('/users/:id', async (req, res) => {
   if (Number(req.params.id) === req.user!.id) return res.status(400).json({ error: 'CANNOT_DELETE_SELF' });
