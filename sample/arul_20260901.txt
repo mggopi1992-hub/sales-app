@@ -1,0 +1,8 @@
+cust_id,cust_name,order_id,item_name,order_date,quantity,price,isDelivered
+C001,'Arul','ORD-001','TV','2026-09-01',12,'14500.00','Yes'
+C002,'Bala','ORD-002','Fridge','2026-09-01',23,'22500.00','Yes'
+C003,'Kamala','ORD-003','AC','2026-09-01',5,'28500.00','Yes'
+C002,'Bala','ORD-001','TV','2026-09-01',20,'14500.00','Yes'
+C004,'Darlyna','ORD-008','Laptop','2026-09-01',35,'44500.00','No'
+C005,'Emira','ORD-012','Tablet','2026-09-01',42,'5500.00','No'
+C001,'Arul','ORD-003','AC','2026-09-01',47,'22500.00','Yes'

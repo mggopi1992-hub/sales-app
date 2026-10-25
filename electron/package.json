@@ -1,0 +1,36 @@
+{
+  "name": "sales-tracker-desktop",
+  "version": "1.0.0",
+  "main": "main.js",
+  "scripts": {
+    "dev": "ELECTRON_DEV=1 electron .",
+    "start": "electron .",
+    "dist": "electron-builder"
+  },
+  "devDependencies": {
+    "electron": "^31.7.7",
+    "electron-builder": "^24.13.3"
+  },
+  "build": {
+    "appId": "com.example.salestracker",
+    "productName": "Sales Tracker",
+    "files": [
+      "main.js"
+    ],
+    "extraResources": [
+      {
+        "from": "../client/dist",
+        "to": "dist"
+      }
+    ],
+    "win": {
+      "target": "nsis"
+    },
+    "mac": {
+      "target": "dmg"
+    },
+    "linux": {
+      "target": "AppImage"
+    }
+  }
+}
