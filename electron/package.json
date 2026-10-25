@@ -1,15 +1,21 @@
+
 {
   "name": "sales-tracker-desktop",
   "version": "1.0.0",
   "main": "main.js",
   "scripts": {
-    "dev": "ELECTRON_DEV=1 electron .",
+    "dev:client": "npm --prefix ../client run dev -- --host 127.0.0.1 --port 5173",
+    "dev:electron": "wait-on http://127.0.0.1:5173 && cross-env ELECTRON_DEV=true electron .",
+    "dev": "concurrently -k \"npm run dev:client\" \"npm run dev:electron\"",
     "start": "electron .",
     "dist": "electron-builder"
   },
   "devDependencies": {
     "electron": "^31.7.7",
-    "electron-builder": "^24.13.3"
+    "electron-builder": "^24.13.3",
+    "concurrently": "^9.1.2",
+    "wait-on": "^8.0.1",
+    "cross-env": "^7.0.3"
   },
   "build": {
     "appId": "com.example.salestracker",
